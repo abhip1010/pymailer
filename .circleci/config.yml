@@ -1,4 +1,4 @@
-#  Python CircleCI 2.0 configuration file
+# Python CircleCI 2.0 configuration file
 #
 # Check https://circleci.com/docs/2.0/language-python/ for more details
 #
@@ -44,10 +44,10 @@ jobs:
       # other common Python testing frameworks include pytest and nose
       # https://pytest.org
       # https://nose.readthedocs.io
-	  # - run:
-	  #     name: run tests
-	  #     command: |
-	  #       . venv/bin/activate
+# - run:
+#     name: run tests
+#     command: |
+#       . venv/bin/activate
       #      # python manage.py test
 
       #- store_artifacts:

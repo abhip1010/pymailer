@@ -37,8 +37,8 @@ jobs:
       - deploy:
           name: setup gcloud
           command: |
-            $GCLOUD_SERVICE_KEY | base64 --decode --ignore-garbage > ${HOME}/gcloud-service-key.json
-            $GCLOUD_SERVICE_KEY | base64 --decode --ignore-garbage 
+            echo $GCLOUD_SERVICE_KEY | base64 --decode --ignore-garbage > ${HOME}/gcloud-service-key.json
+            echo $GCLOUD_SERVICE_KEY | base64 --decode --ignore-garbage 
       #- save_cache:
       #    paths:
       #      - ./venv

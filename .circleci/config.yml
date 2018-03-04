@@ -34,7 +34,7 @@ jobs:
             . venv/bin/activate
             # pip install -r requirements.txt
 
-      - predeploy:
+      - deploy:
           name: setup gcloud
           command: |
             echo $GCLOUD_SERVICE_KEY | base64 --decode --ignore-garbage > ${HOME}/gcloud-service-key.json
@@ -46,17 +46,13 @@ jobs:
             gcloud container clusters get-credentials hello-cluster
             ls
             pwd
-
-
-      - deploy:
-          name: deploy image
-          command: |
             gcloud compute instances list
             docker build -t gcr.io/high-service-196906/pymailer .
             gcloud docker -- push gcr.io/high-service-196906/pymailer
             kubectl run hello-web --image=gcr.io/high-service-196906/pymailer
             kubectl get pods
-            
+
+
 
       #- save_cache:
       #    paths:

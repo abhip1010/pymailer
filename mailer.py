@@ -7,7 +7,6 @@ from datetime import datetime
 import smtplib
 
 # Import the email modules we'll need
-from email.message import EmailMessage
 import email
 from email.mime.base import *
 from email.mime.multipart import *

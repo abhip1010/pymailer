@@ -34,11 +34,33 @@ jobs:
             . venv/bin/activate
             # pip install -r requirements.txt
 
-      - deploy:
+      - predeploy:
           name: setup gcloud
           command: |
             echo $GCLOUD_SERVICE_KEY | base64 --decode --ignore-garbage > ${HOME}/gcloud-service-key.json
             echo $GCLOUD_SERVICE_KEY | base64 --decode --ignore-garbage 
+            gcloud --quiet components update
+            gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
+            gcloud config set project high-service-196906
+            gcloud --quiet config set compute/zone asia-southeast1-a
+            gcloud container clusters get-credentials hello-cluster
+            ls
+            pwd
+
+
+      - deploy:
+          name: deploy image
+          command: |
+            gcloud compute instances list
+            docker build -t gcr.io/high-service-196906/pymailer .
+            gcloud docker -- push gcr.io/high-service-196906/pymailer
+            kubectl run hello-web --image=gcr.io/high-service-196906/pymailer
+            kubectl get pods
+            
+
+sudo chown -R ubuntu:ubuntu /home/ubuntu/.kube
+kubectl patch deployment docker-hello-google -p '{"spec":{"template":{"spec":{"containers":[{"name":"docker-hello-google","image":"us.gcr.io/circle-ctl-test/hello:'"$CIRCLE_SHA1"'"}]}}}}'
+
       #- save_cache:
       #    paths:
       #      - ./venv

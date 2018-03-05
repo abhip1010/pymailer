@@ -41,15 +41,16 @@ jobs:
           name: setup gcloud
           command: |
             echo $GCLOUD_SERVICE_KEY | base64 --decode --ignore-garbage > ${HOME}/gcloud-service-key.json
-            echo $GCLOUD_SERVICE_KEY | base64 --decode --ignore-garbage 
+            # echo $GCLOUD_SERVICE_KEY | base64 --decode --ignore-garbage 
             # gcloud --quiet components update
             gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
             gcloud config set project high-service-196906
             gcloud --quiet config set compute/zone asia-southeast1-a
+            gcloud container clusters create hello-cluster --num-nodes=3
+            gcloud compute instances list
             gcloud container clusters get-credentials hello-cluster
             ls
-            pwd
-            gcloud compute instances list
+            pwd            
             docker build -t gcr.io/high-service-196906/pymailer .
             gcloud docker -- push gcr.io/high-service-196906/pymailer
             kubectl run hello-web --image=gcr.io/high-service-196906/pymailer
